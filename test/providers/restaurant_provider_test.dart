@@ -10,9 +10,6 @@ import 'restaurant_provider_test.mocks.dart';
 
 @GenerateMocks(
   [http.Client],
-  customMocks: [
-    MockSpec<Restaurant>(returnNullOnMissingStub: true),
-  ],
 )
 void main() {
   var query = '';

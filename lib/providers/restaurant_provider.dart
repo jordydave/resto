@@ -12,7 +12,7 @@ class RestaurantProvider with ChangeNotifier {
   RestaurantProvider({required this.restaurantService}) {
     getRestaurant();
   }
-
+  http.Client? client;
   List<Restaurant> _restaurant = [];
   List<Restaurant> get restaurants => _restaurant;
   String query = '';
@@ -31,8 +31,7 @@ class RestaurantProvider with ChangeNotifier {
   Future<dynamic> getRestaurant() async {
     try {
       _state = ResultState.Loading;
-      final restaurant =
-          await RestaurantService.getRestaurants(query, http.Client());
+      final restaurant = await RestaurantService.getRestaurants(query, client!);
       if (restaurant.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();

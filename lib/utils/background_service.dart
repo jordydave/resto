@@ -1,9 +1,9 @@
 import 'dart:ui';
 import 'dart:isolate';
-
 import 'package:http/http.dart' as http;
 import 'package:submission_2_restaurant_dicoding/services/restaurant_service.dart';
 
+import 'package:flutter_test/flutter_test.dart';
 import '../main.dart';
 import 'notification_helper.dart';
 
@@ -28,11 +28,12 @@ class BackgroundService {
   }
 
   static Future<void> callback() async {
+    http.Client? client;
     String query = '';
     print('Alarm fired!');
     final NotificationHelper _notificationHelper = NotificationHelper();
     try {
-      var result = await RestaurantService.getRestaurants(query, http.Client());
+      var result = await RestaurantService.getRestaurants(query, client!);
       await _notificationHelper.showNotification(
           flutterLocalNotificationsPlugin, result[0]);
 

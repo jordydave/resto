@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,12 +13,16 @@ import 'package:submission_2_restaurant_dicoding/services/restaurant_service.dar
 import 'package:submission_2_restaurant_dicoding/theme.dart';
 import 'package:submission_2_restaurant_dicoding/widgets/search_widget.dart';
 
+import 'package:http/http.dart' as http;
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  http.Client? client;
+
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -76,8 +79,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future init() async {
-    final restaurants =
-        await RestaurantService.getRestaurants(query, http.Client());
+    final restaurants = await RestaurantService.getRestaurants(query, client!);
 
     setState(() {
       this.restaurants = restaurants;
@@ -91,7 +93,7 @@ class _HomePageState extends State<HomePage> {
     Future searchRestaurant(String query) async => debounce(
           () async {
             final restaurants =
-                await RestaurantService.getRestaurants(query, http.Client());
+                await RestaurantService.getRestaurants(query, client!);
             if (!mounted) return;
 
             setState(() {

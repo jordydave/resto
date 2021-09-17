@@ -3,13 +3,16 @@ import 'package:http/http.dart' as http;
 import 'package:submission_2_restaurant_dicoding/models/restaurant_model.dart';
 
 class RestaurantService {
+  http.Client? client;
+  RestaurantService({this.client});
+
   static Future<List<Restaurant>> getRestaurants(
     String query,
     http.Client client,
   ) async {
     var headers = {'Content-Type': 'application/json'};
 
-    final response = await client.get(
+    final response = await http.get(
         Uri.parse('http://app.foodmarket.my.id/api/restaurant'),
         headers: headers);
 
